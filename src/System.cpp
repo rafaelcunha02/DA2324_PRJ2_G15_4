@@ -75,6 +75,10 @@ void System::backtrack(int start){
 }
 
 void System::tspVisit(int current, vector<int> &path, double currentWeight, double &minWeight, vector<int> &minPath){
+    if (currentWeight > minWeight) {
+        return;
+    }
+
     if (path.size() == graph.getNumVertex()){
         auto first = graph.findVertex(path[0]);
         for (auto edge : first->getAdj()){
@@ -84,7 +88,6 @@ void System::tspVisit(int current, vector<int> &path, double currentWeight, doub
                 if (weight < minWeight){
                     minWeight = weight;
                     minPath = path;
-                    printPath(path);
                     break;
                 }
             }
