@@ -36,8 +36,21 @@ public:
     const Graph<int>& getGraph() const { return graph; }
 
 
-   void readAndParse();
+    void readAndParse();
+    void backtrack(int start);
 
+    void tspVisit(int start, vector<int> &path);
+
+
+    static void printPath(const vector<int> &path);
+
+    double pathWeight(const vector<int> &path);
+
+    void tspVisit(int start, vector<int> &path, double minWeight);
+
+    void backtrack(int start, vector<int> &path, vector<bool> &visited, double &min_weight, vector<int> &min_path);
+
+    void tspVisit(int start, vector<int> &path, double currentWeight, double &minWeight, vector<int> &minPath);
 };
 
 #endif //DA2324_PRJ1_G15_4_PARSING_H
