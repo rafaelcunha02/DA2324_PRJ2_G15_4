@@ -7,6 +7,8 @@
 #include <sstream>
 #include <fstream>
 #include <unordered_map>
+#include <set>
+#include <map>
 
 using namespace std;
 
@@ -50,13 +52,27 @@ public:
     void tspVisit(int start, vector<int> &path, double currentWeight, double &minWeight, vector<int> &minPath);
 
 
-    vector<Vertex<int> *> prim(Graph<int> *g);
+    Graph<int> * prim(Graph<int> *g);
 
 
 
     static void printTree(const vector<Vertex<int> *> &vertexSet);
 
     double spanningTreeCost(const vector<Vertex<int> *> &res);
+
+    void nearestNeighboursGreedy(int start);
+
+    void resetGraph();
+
+    void christofedes(int start);
+
+    void mstDfs(Vertex<int> *v, std::set<int> &visited);
+
+    pair<double, vector<int>> mstDfs(Graph<int> *mst);
+
+    double mstDfsVisit(Vertex<int> *&pVertex, vector<int> &path);
+
+    vector<Edge<int> *> minimumWeightPerfectMatching(vector<int> &impares, std::map<int, Vertex<int> *> &vertexMap);
 };
 
 #endif //DA2324_PRJ1_G15_4_PARSING_H

@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <set>
 #include <map>
+#include <stack>
 
 
 using namespace std;
@@ -76,11 +77,20 @@ double System::pathWeight(const vector<int>& path) {
 }
 
 
+void System::resetGraph() {
+    for (auto v : graph.getVertexSet()){
+        v->setVisited(false);
+    }
+}
 
 
 
-//EXERCICIO 1
+
+
+//BRUTE-FORCE 2.1
 void System::backtrack(int start){
+
+    resetGraph();
 
     double minWeight = INF;
     vector<int> minPath = {};
@@ -137,9 +147,9 @@ void System::tspVisit(int current, vector<int> &path, double currentWeight, doub
 
 
 //LOWER BOUND
-std::vector<Vertex<int> *> System::prim(Graph<int> * g) {
+Graph<int> * System::prim(Graph<int> * g) {
     if (g->getVertexSet().empty()) {
-        return g->getVertexSet();
+        return g;
     }
 
     for(auto v : g->getVertexSet()) {
@@ -152,6 +162,9 @@ std::vector<Vertex<int> *> System::prim(Graph<int> * g) {
     s->setDist(0);
     MutablePriorityQueue<Vertex<int>> q;
     q.insert(s);
+
+    map<int, int> parent; // This map will store the MST edges
+
     while( ! q.empty() ) {
         auto v = q.extractMin();
         v->setVisited(true);
@@ -162,6 +175,7 @@ std::vector<Vertex<int> *> System::prim(Graph<int> * g) {
                 if(e->getWeight() < oldDist) {
                     w->setDist(e->getWeight());
                     w->setPath(e);
+                    parent[w->getInfo()] = v->getInfo(); // Store the edge in the MST
                     if (oldDist == INF) {
                         q.insert(w);
                     }
@@ -172,8 +186,35 @@ std::vector<Vertex<int> *> System::prim(Graph<int> * g) {
             }
         }
     }
-    printTree(g->getVertexSet());
-    return g->getVertexSet();
+
+// Initialize the MST graph
+auto* mst = new Graph<int>();
+
+for (auto &p : parent) {
+    int childInfo = p.first;
+    int parentInfo = p.second;
+
+    // Check if the vertices already exist in the MST graph
+    Vertex<int>* childVertex = mst->findVertex(childInfo);
+    if (!childVertex) {
+        mst->addVertex(childInfo);
+        childVertex = mst->findVertex(childInfo);
+    }
+
+    Vertex<int>* parentVertex = mst->findVertex(parentInfo);
+    if (!parentVertex) {
+        mst->addVertex(parentInfo);
+        parentVertex = mst->findVertex(parentInfo);
+    }
+
+    // Add the undirected edge to the MST graph
+    childVertex->addEdge(parentVertex, g->findVertex(childInfo)->getDist());
+    parentVertex->addEdge(childVertex, g->findVertex(childInfo)->getDist());
+}
+
+    printTree(graph.getVertexSet());
+    resetGraph();
+    return mst;
 }
 
 
@@ -202,9 +243,7 @@ void System::printTree(const vector<Vertex<int> *> &vertexSet) {
         }
 
         visited.emplace(u);
-
         w += vertexSet[u]->getDist();
-        path.push_back(u);
 
         for (int v : adj[u]) {
             q.push(v);
@@ -213,3 +252,120 @@ void System::printTree(const vector<Vertex<int> *> &vertexSet) {
 
     cout << "Lower Bound: " << w << endl;
 }
+
+//CHRISTOFEDES 2.3
+
+vector<Edge<int>*> MinWeightMatching(vector<Vertex<int>*>& impares) {
+    vector<Edge<int>*> matching;
+    while(!impares.empty()){
+        auto v = impares.back();
+        impares.pop_back();
+        Vertex<int>* minVertex = nullptr;
+        Edge<int>* minEdge = nullptr;
+        double minWeight = INF;
+
+        for(auto u : impares){
+            for(auto e : u->getAdj()){
+                if(e->getDest() == v){
+                    if(e->getWeight() < minWeight){
+                        minWeight = e->getWeight();
+                        minVertex = u;
+                        minEdge = e;
+                    }
+                }
+            }
+        }
+        if(minVertex != nullptr){
+            matching.emplace_back(minEdge);
+            impares.erase(find(impares.begin(), impares.end(), minVertex));
+        }
+    }
+
+    return matching;
+}
+
+vector<int> eulerianCircuit(int start, Graph<int>& graph) {
+    // Check if the graph has an Eulerian circuit
+    for (auto v : graph.getVertexSet()) {
+        if (v->getAdj().size() % 2 != 0) {
+            cout << "no eulerian circuit\n";
+            return {};
+        }
+    }
+
+    // Stack to hold vertices during the process
+    stack<int> currentPath;
+
+    // Vector to store the Eulerian circuit
+    vector<int> circuit;
+
+    // Start from the given starting vertex
+    currentPath.push(start);
+    int currentVertex = start;
+
+    while (!currentPath.empty()) {
+        // If the current vertex has any neighbor
+        if (!graph.findVertex(currentVertex)->getAdj().empty()) {
+            // Push the vertex into the stack and remove an edge
+            currentPath.push(currentVertex);
+            int nextVertex = graph.findVertex(currentVertex)->getAdj().front()->getDest()->getInfo();
+
+            // Remove edge from the graph
+            graph.removeEdge(currentVertex, nextVertex);
+            graph.removeEdge(nextVertex, currentVertex);
+
+            // Move to next vertex
+            currentVertex = nextVertex;
+        } else { // If all edges are visited
+            circuit.push_back(currentVertex);
+
+            // Back-tracking from the stack
+            currentVertex = currentPath.top();
+            currentPath.pop();
+        }
+    }
+
+    // Reverse the circuit to get it in the correct order
+    reverse(circuit.begin(), circuit.end());
+
+    // Return the Eulerian circuit
+    return circuit;
+}
+
+vector<int> eulerToHamilton(const vector<int>& eulerCircuit) {
+    vector<int> hamiltonPath;
+    unordered_map<int, bool> visited;
+
+    for (int vertex : eulerCircuit) {
+        if (!visited[vertex]) {
+            visited[vertex] = true;
+            hamiltonPath.push_back(vertex);
+        }
+    }
+
+    return hamiltonPath;
+}
+
+void System::christofedes(int start){
+    auto* tree = prim(&graph);
+    vector<Vertex<int>*> impares;
+
+    map<int, Vertex<int>*> vertexMap;
+    for (auto v : tree->getVertexSet()){
+        vertexMap[v->getInfo()] = v;
+        if (v->getAdj().size() % 2 != 0) {
+            impares.push_back(graph.findVertex(v->getInfo()));
+        }
+    }
+
+    vector<Edge<int>*> matching = MinWeightMatching(impares);
+    for (auto e : matching){
+        tree->addBidirectionalEdge(e->getOrig()->getInfo(), e->getDest()->getInfo(), e->getWeight());
+    }
+    vector<int> euler = eulerianCircuit(start, *tree);
+    auto ham = eulerToHamilton(euler);
+
+    printPath(ham);
+    cout << pathWeight(ham) << endl;
+}
+

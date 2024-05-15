@@ -12,9 +12,8 @@ int main() {
 
 
     Graph<int> *g = &graph;
-    system.backtrack(0);
-    system.prim(g);
-
+    system.christofedes(0);
+    cout << "done";
 
     return 0;
 }
