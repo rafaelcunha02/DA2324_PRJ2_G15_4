@@ -14,6 +14,7 @@ int main() {
     Graph<int> *g = &graph;
     system.christofedes(0);
     cout << "done";
+    system.triangularApproximation(0);
 
     return 0;
 }

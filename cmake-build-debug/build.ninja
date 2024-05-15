@@ -67,6 +67,12 @@ build CMakeFiles/untitled19.dir/data_structures/UFDS.cpp.obj: CXX_COMPILER__unti
   OBJECT_DIR = CMakeFiles\untitled19.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled19.dir\data_structures
 
+build CMakeFiles/untitled19.dir/src/App.cpp.obj: CXX_COMPILER__untitled19_unscanned_Debug C$:/Users/Rafa/CLionProjects/untitled19/src/App.cpp || cmake_object_order_depends_target_untitled19
+  DEP_FILE = CMakeFiles\untitled19.dir\src\App.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\untitled19.dir
+  OBJECT_FILE_DIR = CMakeFiles\untitled19.dir\src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target untitled19
@@ -75,7 +81,7 @@ build CMakeFiles/untitled19.dir/data_structures/UFDS.cpp.obj: CXX_COMPILER__unti
 #############################################
 # Link the executable untitled19.exe
 
-build untitled19.exe: CXX_EXECUTABLE_LINKER__untitled19_Debug CMakeFiles/untitled19.dir/main.cpp.obj CMakeFiles/untitled19.dir/src/System.cpp.obj CMakeFiles/untitled19.dir/data_structures/UFDS.cpp.obj
+build untitled19.exe: CXX_EXECUTABLE_LINKER__untitled19_Debug CMakeFiles/untitled19.dir/main.cpp.obj CMakeFiles/untitled19.dir/src/System.cpp.obj CMakeFiles/untitled19.dir/data_structures/UFDS.cpp.obj CMakeFiles/untitled19.dir/src/App.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\untitled19.dir

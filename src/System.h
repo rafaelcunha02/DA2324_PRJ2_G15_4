@@ -73,6 +73,10 @@ public:
     double mstDfsVisit(Vertex<int> *&pVertex, vector<int> &path);
 
     vector<Edge<int> *> minimumWeightPerfectMatching(vector<int> &impares, std::map<int, Vertex<int> *> &vertexMap);
+
+    void triangularApproximation(int start);
+
+    void preorderTraversal(int node, vector<int> &path, vector<bool> &visited);
 };
 
 #endif //DA2324_PRJ1_G15_4_PARSING_H

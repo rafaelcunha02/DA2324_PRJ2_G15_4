@@ -7,4 +7,6 @@ add_executable(untitled19 main.cpp
         src/System.cpp
         src/System.cpp
         data_structures/UFDS.cpp
-        src/App.h)
+        src/App.h
+        src/App.cpp
+)

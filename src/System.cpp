@@ -4,6 +4,7 @@
 #include <set>
 #include <map>
 #include <stack>
+#include <cmath>
 
 
 using namespace std;
@@ -83,6 +84,30 @@ void System::resetGraph() {
     }
 }
 
+double deg2rad(double deg) {
+    return deg * (M_PI/180);
+}
+
+double haversine(double lat_1, double log_1, double lat_2, double log_2) {
+
+    lat_1 = deg2rad(lat_1);
+    log_1 = deg2rad(log_1);
+    lat_2 = deg2rad(lat_2);
+    log_2 = deg2rad(log_2);
+
+    double r = 6371;
+
+    double dlat = lat_2 - lat_1;
+    double dlon = log_2 - log_1;
+
+    double a = sin(dlat / 2) * sin(dlat / 2) + cos(lat_1) * cos(lat_2) * sin(dlon / 2) * sin(dlon / 2);
+
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    double d = r * c;
+
+    return d;
+}
+
 
 
 
@@ -146,7 +171,7 @@ void System::tspVisit(int current, vector<int> &path, double currentWeight, doub
 
 
 
-//LOWER BOUND
+//LOWER BOUND + MINIMUM SPANNING TREE
 Graph<int> * System::prim(Graph<int> * g) {
     if (g->getVertexSet().empty()) {
         return g;
@@ -163,7 +188,7 @@ Graph<int> * System::prim(Graph<int> * g) {
     MutablePriorityQueue<Vertex<int>> q;
     q.insert(s);
 
-    map<int, int> parent; // This map will store the MST edges
+    map<int, int> parent;
 
     while( ! q.empty() ) {
         auto v = q.extractMin();
@@ -187,14 +212,12 @@ Graph<int> * System::prim(Graph<int> * g) {
         }
     }
 
-// Initialize the MST graph
 auto* mst = new Graph<int>();
 
 for (auto &p : parent) {
     int childInfo = p.first;
     int parentInfo = p.second;
 
-    // Check if the vertices already exist in the MST graph
     Vertex<int>* childVertex = mst->findVertex(childInfo);
     if (!childVertex) {
         mst->addVertex(childInfo);
@@ -207,7 +230,6 @@ for (auto &p : parent) {
         parentVertex = mst->findVertex(parentInfo);
     }
 
-    // Add the undirected edge to the MST graph
     childVertex->addEdge(parentVertex, g->findVertex(childInfo)->getDist());
     parentVertex->addEdge(childVertex, g->findVertex(childInfo)->getDist());
 }
@@ -253,8 +275,42 @@ void System::printTree(const vector<Vertex<int> *> &vertexSet) {
     cout << "Lower Bound: " << w << endl;
 }
 
-//CHRISTOFEDES 2.3
 
+
+
+
+//TRIANGULAR APPROXIMATION 2.2
+void System::triangularApproximation(int start) {
+    Graph<int> *g = &graph;
+    vector<Vertex<int> *> mst = prim(g)->getVertexSet();
+
+    vector<bool> visited(graph.getNumVertex(), false);
+    vector<int> path;
+
+    preorderTraversal(start, path, visited);
+    path.push_back(start); // Complete the cycle
+
+    double totalWeight = pathWeight(path);
+
+    cout << "Triangular Approximation Path Weight: " << totalWeight << endl;
+    printPath(path);
+}
+
+void System::preorderTraversal(int node, vector<int> &path, vector<bool> &visited) {
+    visited[node] = true;
+    path.push_back(node);
+
+    for (auto v: graph.getVertexSet()) {
+        if (v->getPath() && v->getPath()->getOrig()->getInfo() == node && !visited[v->getInfo()]) {
+            preorderTraversal(v->getInfo(), path, visited);
+        }
+    }
+}
+
+
+
+
+//CHRISTOFEDES 2.3
 vector<Edge<int>*> MinWeightMatching(vector<Vertex<int>*>& impares) {
     vector<Edge<int>*> matching;
     while(!impares.empty()){
@@ -368,4 +424,7 @@ void System::christofedes(int start){
     printPath(ham);
     cout << pathWeight(ham) << endl;
 }
+
+
+
 
