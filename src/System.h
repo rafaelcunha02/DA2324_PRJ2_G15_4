@@ -2,10 +2,12 @@
 #define DA2324_PRJ1_G15_4_PARSING_H
 
 #include "../data_structures/Graph.h"
+#include "../data_structures/MutablePriorityQueue.h"
 #include <string>
 #include <sstream>
 #include <fstream>
 #include <unordered_map>
+
 using namespace std;
 
 /**
@@ -39,18 +41,22 @@ public:
     void readAndParse();
     void backtrack(int start);
 
-    void tspVisit(int start, vector<int> &path);
 
 
     static void printPath(const vector<int> &path);
 
     double pathWeight(const vector<int> &path);
 
-    void tspVisit(int start, vector<int> &path, double minWeight);
-
-    void backtrack(int start, vector<int> &path, vector<bool> &visited, double &min_weight, vector<int> &min_path);
-
     void tspVisit(int start, vector<int> &path, double currentWeight, double &minWeight, vector<int> &minPath);
+
+
+    vector<Vertex<int> *> prim(Graph<int> *g);
+
+
+
+    static void printTree(const vector<Vertex<int> *> &vertexSet);
+
+    double spanningTreeCost(const vector<Vertex<int> *> &res);
 };
 
 #endif //DA2324_PRJ1_G15_4_PARSING_H
