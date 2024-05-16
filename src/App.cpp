@@ -190,7 +190,8 @@ void stadiumsHeuristicMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -206,10 +207,13 @@ void stadiumsHeuristicMenu(System system) {
                 sistema.backtrack(0);
                 break;
             case '2':
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -234,7 +238,8 @@ void tourismHeuristicMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -252,11 +257,14 @@ void tourismHeuristicMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -370,7 +378,8 @@ void nineHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -385,10 +394,13 @@ void nineHundredMenu(System system) {
                 sistema.backtrack(0);
                 break;
             case '2':
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
-                sistema.triangularApproximationTwoOpt(0);
+                sistema.triangularApproximationTwoOpt(0,0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -412,7 +424,8 @@ void eightHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -430,11 +443,14 @@ void eightHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -459,7 +475,8 @@ void sevenHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -472,16 +489,16 @@ void sevenHundredMenu(System system) {
 
         switch (choice[0]) {
             case '1':
-                //parse
                 sistema.backtrack(0);
                 break;
             case '2':
-                //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
-                //parse
-                //sistema.christofedes(0);
+                sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -506,7 +523,8 @@ void sixHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -524,11 +542,14 @@ void sixHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -553,7 +574,8 @@ void fiveHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -571,11 +593,14 @@ void fiveHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -600,7 +625,8 @@ void fourHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -618,11 +644,14 @@ void fourHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -647,7 +676,8 @@ void threeHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -665,11 +695,14 @@ void threeHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -694,7 +727,8 @@ void twoHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -712,11 +746,14 @@ void twoHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -741,7 +778,8 @@ void oneHundredMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -759,11 +797,14 @@ void oneHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -788,7 +829,8 @@ void seventyFiveMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -806,11 +848,14 @@ void seventyFiveMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -835,7 +880,8 @@ void fiftyMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -853,11 +899,14 @@ void fiftyMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
                 //sistema.christofedes(0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;
@@ -882,7 +931,8 @@ void twentyFiveMenu(System system) {
         cout << "Choose an option:\n";
         cout << "1. Brute-Force Approach \n";
         cout << "2. Triangular Approximation (2-approx) \n";
-        cout << "3. Christofides Algorithm (1.5-approx) \n";
+        cout << "3. Student-Developed Heuristic \n";
+        cout << "4. Compare the 2-approx algorithm with the Student-Developed one \n";
         cout << "b. Go back\n";
         cout << "----------------------------------\n";
         cout << "Your choice: " << endl;
@@ -900,11 +950,14 @@ void twentyFiveMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.triangularApproximation(0);
+                sistema.triangularApproximation(0,0);
                 break;
             case '3':
                 //parse
-                sistema.triangularApproximationTwoOpt(0);
+                sistema.triangularApproximationTwoOpt(0,0);
+                break;
+            case '4':
+                sistema.comparison();
                 break;
             case 'b':
                 back = true;

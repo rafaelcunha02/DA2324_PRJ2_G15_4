@@ -147,7 +147,6 @@ double haversine(double lat_1, double log_1, double lat_2, double log_2) {
 
 
 //BRUTE-FORCE 2.1
-#include <chrono>
 
 void System::backtrack(int start){
     auto start_time = std::chrono::high_resolution_clock::now();
@@ -214,6 +213,19 @@ void System::tspVisit(int current, vector<int> &path, double currentWeight, doub
 
 
 //LOWER BOUND + MINIMUM SPANNING TREE
+double System::calculateMSTWeight(Graph<int> *mst) {
+    double totalWeight = 0.0;
+
+    for (auto &vertex : mst->getVertexSet()) {
+        for (auto &edge : vertex->getAdj()) {
+            totalWeight += edge->getWeight();
+        }
+    }
+
+    return totalWeight / 2.0;
+}
+
+
 Graph<int> * System::prim(Graph<int> * g) {
     if (g->getVertexSet().empty()) {
         return g;
@@ -276,7 +288,6 @@ for (auto &p : parent) {
     parentVertex->addEdge(childVertex, g->findVertex(childInfo)->getDist());
 }
 
-    resetGraph();
     return mst;
 }
 
@@ -314,14 +325,14 @@ void System::printTree(const vector<Vertex<int> *> &vertexSet) {
     }
 
     cout << "Lower Bound: " << w << endl;
+    resetGraph();
 }
 
 
 
 
-
 //TRIANGULAR APPROXIMATION 2.2
-void System::triangularApproximation(int start) {
+void System::triangularApproximation(int start, int compares) {
     auto start_time = std::chrono::high_resolution_clock::now();
 
     Graph<int> *g = &graph;
@@ -339,8 +350,11 @@ void System::triangularApproximation(int start) {
 
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop_time - start_time);
 
+
+    if(compares == 0){
+        printPath(path);
+    }
     cout << "Triangular Approximation Path Weight: " << totalWeight << endl;
-    printPath(path);
     std::cout << "Time taken by Triangular Approximation: " << duration.count() << " milliseconds" << std::endl;
 }
 void System::preorderTraversal(int node, vector<int> &path, vector<bool> &visited) {
@@ -356,7 +370,7 @@ void System::preorderTraversal(int node, vector<int> &path, vector<bool> &visite
 
 
 
-/*
+
 //CHRISTOFIDES 2.3
 
 vector<Edge<int>*> MinWeightMatching(vector<Vertex<int>*>& impares) {
@@ -453,7 +467,7 @@ void System::christofedes(int start){
     }
     vector<Vertex<int>*> euler = eulerianCircuit(start, *tree);
     auto ham = eulerToHamilton(euler);
-    twoOpt(ham);
+    //twoOpt(ham);
 
     auto stop_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop_time - start_time);
@@ -471,7 +485,7 @@ void System::christofedes(int start){
     cout << "Christofides Path Weight: " << pathWeight(intPath) << endl;
     cout << "Time taken by Christofides Algorithm: " << duration.count() << " milliseconds" << std::endl;
 }
-*/
+
 
 //TWO OPT FOR EX 2.3 // THERE'S ALSO A 2MIN LIMITED VERSION
 void System::twoOpt(vector<Vertex<int>*>& tour) {
@@ -479,6 +493,7 @@ void System::twoOpt(vector<Vertex<int>*>& tour) {
     bool improvement = true;
     auto tamanho = tour.size();
     while (improvement) {
+        cout << "improvement";
         improvement = false;
         for (int i = 0; i < tamanho - 1; i++) {
             for (int j = i + 2; j < tamanho - 1; j++) {
@@ -587,7 +602,7 @@ void System::twoOpt(vector<Vertex<int>*>& tour) {
     }
 }*/
 
-void System::triangularApproximationTwoOpt(int start) {
+void System::triangularApproximationTwoOpt(int start, int compares) {
     auto start_time = std::chrono::high_resolution_clock::now();
 
     Graph<int> *g = &graph;
@@ -618,11 +633,18 @@ void System::triangularApproximationTwoOpt(int start) {
 
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop_time - start_time);
 
+    if(compares == 0){
+        printPath(path);
+    }
     cout << "Triangular Approximation two opt Path Weight: " << totalWeight << endl;
-    printPath(path);
     std::cout << "Time taken by Triangular Approximation: " << duration.count() << " milliseconds" << std::endl;
 }
 
 
+void System::comparison(){
+    auto mst = prim(&graph);
+    cout << "Lower Bound: " <<  calculateMSTWeight(mst) << endl;
+    triangularApproximation(0,1);
+    triangularApproximationTwoOpt(0,1);
 
-
+}
