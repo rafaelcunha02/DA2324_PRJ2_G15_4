@@ -5,6 +5,8 @@
 #include <map>
 #include <stack>
 #include <cmath>
+#include <chrono>
+
 
 
 using namespace std;
@@ -16,7 +18,6 @@ using namespace std;
 System::System() : graph() {}
 
 //PARSING
-
 void System::readAndParse() {
 
     ifstream file("../data/Toy-Graphs/stadiums.csv");
@@ -45,6 +46,39 @@ void System::readAndParse() {
 }
 
 
+void System::readAndParseChoice(const string& choice){
+
+    cout << "Preparing your graph..." << endl;
+
+    string path = "../data/";
+    path += choice;
+    path += ".csv";
+
+
+    ifstream file(path);
+    string line;
+
+    getline(file, line);
+    while (getline(file, line)){
+        stringstream ss(line);
+        string source, dest, peso;
+        double weight;
+
+        getline(ss, source, ',');
+        getline(ss, dest, ',');
+        getline(ss, peso, ',');
+        weight = stod(peso);
+
+        if(!graph.findVertex(stoi(source))){
+            graph.addVertex(stoi(source));
+        }
+        if(!graph.findVertex(stoi(dest))){
+            graph.addVertex(stoi(dest));
+        }
+
+        graph.addBidirectionalEdge(stoi(source),stoi(dest), weight);
+    }
+}
 
 
 
@@ -113,7 +147,10 @@ double haversine(double lat_1, double log_1, double lat_2, double log_2) {
 
 
 //BRUTE-FORCE 2.1
+#include <chrono>
+
 void System::backtrack(int start){
+    auto start_time = std::chrono::high_resolution_clock::now();
 
     resetGraph();
 
@@ -131,8 +168,13 @@ void System::backtrack(int start){
 
     tspVisit(start, path, 0, minWeight, minPath);
 
+    auto stop_time = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop_time - start_time);
+
     cout << "Minimum weight: " << minWeight << endl;
     printPath(minPath);
+    std::cout << "Time taken by the Brute-Force Approach: " << duration.count() << " milliseconds" << std::endl;
 }
 
 void System::tspVisit(int current, vector<int> &path, double currentWeight, double &minWeight, vector<int> &minPath){
@@ -200,7 +242,7 @@ Graph<int> * System::prim(Graph<int> * g) {
                 if(e->getWeight() < oldDist) {
                     w->setDist(e->getWeight());
                     w->setPath(e);
-                    parent[w->getInfo()] = v->getInfo(); // Store the edge in the MST
+                    parent[w->getInfo()] = v->getInfo();
                     if (oldDist == INF) {
                         q.insert(w);
                     }
@@ -234,7 +276,6 @@ for (auto &p : parent) {
     parentVertex->addEdge(childVertex, g->findVertex(childInfo)->getDist());
 }
 
-    printTree(graph.getVertexSet());
     resetGraph();
     return mst;
 }
@@ -281,6 +322,8 @@ void System::printTree(const vector<Vertex<int> *> &vertexSet) {
 
 //TRIANGULAR APPROXIMATION 2.2
 void System::triangularApproximation(int start) {
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     Graph<int> *g = &graph;
     vector<Vertex<int> *> mst = prim(g)->getVertexSet();
 
@@ -288,14 +331,18 @@ void System::triangularApproximation(int start) {
     vector<int> path;
 
     preorderTraversal(start, path, visited);
-    path.push_back(start); // Complete the cycle
+    path.push_back(start);
 
     double totalWeight = pathWeight(path);
 
+    auto stop_time = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop_time - start_time);
+
     cout << "Triangular Approximation Path Weight: " << totalWeight << endl;
     printPath(path);
+    std::cout << "Time taken by Triangular Approximation: " << duration.count() << " milliseconds" << std::endl;
 }
-
 void System::preorderTraversal(int node, vector<int> &path, vector<bool> &visited) {
     visited[node] = true;
     path.push_back(node);
@@ -309,8 +356,9 @@ void System::preorderTraversal(int node, vector<int> &path, vector<bool> &visite
 
 
 
+/*
+//CHRISTOFIDES 2.3
 
-//CHRISTOFEDES 2.3
 vector<Edge<int>*> MinWeightMatching(vector<Vertex<int>*>& impares) {
     vector<Edge<int>*> matching;
     while(!impares.empty()){
@@ -340,8 +388,9 @@ vector<Edge<int>*> MinWeightMatching(vector<Vertex<int>*>& impares) {
     return matching;
 }
 
-vector<int> eulerianCircuit(int start, Graph<int>& graph) {
-    // Check if the graph has an Eulerian circuit
+
+
+vector<Vertex<int>*> eulerianCircuit(int start, Graph<int>& graph) {
     for (auto v : graph.getVertexSet()) {
         if (v->getAdj().size() % 2 != 0) {
             cout << "no eulerian circuit\n";
@@ -349,50 +398,34 @@ vector<int> eulerianCircuit(int start, Graph<int>& graph) {
         }
     }
 
-    // Stack to hold vertices during the process
     stack<int> currentPath;
-
-    // Vector to store the Eulerian circuit
-    vector<int> circuit;
-
-    // Start from the given starting vertex
+    vector<Vertex<int>*> circuit;
     currentPath.push(start);
     int currentVertex = start;
 
     while (!currentPath.empty()) {
-        // If the current vertex has any neighbor
         if (!graph.findVertex(currentVertex)->getAdj().empty()) {
-            // Push the vertex into the stack and remove an edge
             currentPath.push(currentVertex);
             int nextVertex = graph.findVertex(currentVertex)->getAdj().front()->getDest()->getInfo();
-
-            // Remove edge from the graph
             graph.removeEdge(currentVertex, nextVertex);
             graph.removeEdge(nextVertex, currentVertex);
-
-            // Move to next vertex
             currentVertex = nextVertex;
-        } else { // If all edges are visited
-            circuit.push_back(currentVertex);
-
-            // Back-tracking from the stack
+        } else {
+            circuit.push_back(graph.findVertex(currentVertex));
             currentVertex = currentPath.top();
             currentPath.pop();
         }
     }
 
-    // Reverse the circuit to get it in the correct order
     reverse(circuit.begin(), circuit.end());
-
-    // Return the Eulerian circuit
     return circuit;
 }
 
-vector<int> eulerToHamilton(const vector<int>& eulerCircuit) {
-    vector<int> hamiltonPath;
-    unordered_map<int, bool> visited;
+vector<Vertex<int>*> eulerToHamilton(const vector<Vertex<int>*>& eulerCircuit) {
+    vector<Vertex<int>*> hamiltonPath;
+    unordered_map<Vertex<int>*, bool> visited;
 
-    for (int vertex : eulerCircuit) {
+    for (Vertex<int>* vertex : eulerCircuit) {
         if (!visited[vertex]) {
             visited[vertex] = true;
             hamiltonPath.push_back(vertex);
@@ -403,12 +436,12 @@ vector<int> eulerToHamilton(const vector<int>& eulerCircuit) {
 }
 
 void System::christofedes(int start){
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     auto* tree = prim(&graph);
     vector<Vertex<int>*> impares;
 
-    map<int, Vertex<int>*> vertexMap;
     for (auto v : tree->getVertexSet()){
-        vertexMap[v->getInfo()] = v;
         if (v->getAdj().size() % 2 != 0) {
             impares.push_back(graph.findVertex(v->getInfo()));
         }
@@ -418,11 +451,176 @@ void System::christofedes(int start){
     for (auto e : matching){
         tree->addBidirectionalEdge(e->getOrig()->getInfo(), e->getDest()->getInfo(), e->getWeight());
     }
-    vector<int> euler = eulerianCircuit(start, *tree);
+    vector<Vertex<int>*> euler = eulerianCircuit(start, *tree);
     auto ham = eulerToHamilton(euler);
+    twoOpt(ham);
 
-    printPath(ham);
-    cout << pathWeight(ham) << endl;
+    auto stop_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop_time - start_time);
+
+    vector<int> intPath;
+    intPath.reserve(ham.size());
+
+
+    for (auto v : ham){
+        intPath.push_back(v->getInfo());
+    }
+
+    printPath(intPath);
+
+    cout << "Christofides Path Weight: " << pathWeight(intPath) << endl;
+    cout << "Time taken by Christofides Algorithm: " << duration.count() << " milliseconds" << std::endl;
+}
+*/
+
+//TWO OPT FOR EX 2.3 // THERE'S ALSO A 2MIN LIMITED VERSION
+void System::twoOpt(vector<Vertex<int>*>& tour) {
+    cout << "inicio";
+    bool improvement = true;
+    auto tamanho = tour.size();
+    while (improvement) {
+        improvement = false;
+        for (int i = 0; i < tamanho - 1; i++) {
+            for (int j = i + 2; j < tamanho - 1; j++) {
+
+                double oldDistance = 0;
+                for (auto edge : tour[i]->getAdj()){
+                    if (edge->getDest()->getInfo() == tour[i+1]->getInfo()){
+                        oldDistance += edge->getWeight();
+                        break;
+                    }
+                }
+                for (auto edge : tour[j]->getAdj()){
+                    if (edge->getDest()->getInfo() == tour[j+1]->getInfo()){
+                        oldDistance += edge->getWeight();
+                        break;
+                    }
+                }
+
+                double newDistance = 0;
+                for (auto edge: tour[i]->getAdj()){
+                    if (edge->getDest()->getInfo() == tour[j]->getInfo()){
+                        newDistance += edge->getWeight();
+                        break;
+                    }
+                }
+                for (auto edge: tour[i+1]->getAdj()){
+                    if(edge->getDest()->getInfo() == tour[j+1]->getInfo()){
+                        newDistance += edge->getWeight();
+                        break;
+                    }
+                }
+
+                if (newDistance < oldDistance) {
+                    reverse(tour.begin() + i + 1, tour.begin() + j + 1);
+                    improvement = true;
+                }
+            }
+        }
+    }
+}
+
+
+//2MIN LIMITED VERSION
+/*void System::twoOpt(vector<Vertex<int>*>& tour) {
+    cout << "inicio";
+    bool improvement = true;
+    auto tamanho = tour.size();
+
+    // Get the start time
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    while (improvement) {
+        // Check if two minutes have passed
+        auto current_time = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::minutes>(current_time - start_time);
+        if (duration.count() >= 2) {
+            break;
+        }
+
+        improvement = false;
+        double bestImprovement = 0;
+        int bestI = -1, bestJ = -1;
+        for (int i = 0; i < tamanho - 1; i++) {
+            for (int j = i + 2; j < tamanho - 1; j++) {
+
+                double oldDistance = 0;
+                for (auto edge : tour[i]->getAdj()){
+                    if (edge->getDest()->getInfo() == tour[i+1]->getInfo()){
+                        oldDistance += edge->getWeight();
+                        break;
+                    }
+                }
+                for (auto edge : tour[j]->getAdj()){
+                    if (edge->getDest()->getInfo() == tour[j+1]->getInfo()){
+                        oldDistance += edge->getWeight();
+                        break;
+                    }
+                }
+
+                double newDistance = 0;
+                for (auto edge: tour[i]->getAdj()){
+                    if (edge->getDest()->getInfo() == tour[j]->getInfo()){
+                        newDistance += edge->getWeight();
+                        break;
+                    }
+                }
+                for (auto edge: tour[i+1]->getAdj()){
+                    if(edge->getDest()->getInfo() == tour[j+1]->getInfo()){
+                        newDistance += edge->getWeight();
+                        break;
+                    }
+                }
+
+                double improvementValue = oldDistance - newDistance;
+                if (improvementValue > bestImprovement) {
+                    bestImprovement = improvementValue;
+                    bestI = i;
+                    bestJ = j;
+                }
+            }
+        }
+        if (bestImprovement > 0) {
+            reverse(tour.begin() + bestI + 1, tour.begin() + bestJ + 1);
+            improvement = true;
+        }
+    }
+}*/
+
+void System::triangularApproximationTwoOpt(int start) {
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    Graph<int> *g = &graph;
+    vector<Vertex<int> *> mst = prim(g)->getVertexSet();
+
+    vector<bool> visited(graph.getNumVertex(), false);
+    vector<int> path;
+
+    preorderTraversal(start, path, visited);
+    path.push_back(start);
+
+    vector<Vertex<int>*> vertexPath;
+    vertexPath.reserve(path.size());
+    for (int i : path) {
+        vertexPath.push_back(graph.findVertex(i));
+    }
+
+    twoOpt(vertexPath);
+
+    path.clear();
+    for (auto v : vertexPath) {
+        path.push_back(v->getInfo());
+    }
+
+    double totalWeight = pathWeight(path);
+
+    auto stop_time = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop_time - start_time);
+
+    cout << "Triangular Approximation two opt Path Weight: " << totalWeight << endl;
+    printPath(path);
+    std::cout << "Time taken by Triangular Approximation: " << duration.count() << " milliseconds" << std::endl;
 }
 
 

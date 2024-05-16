@@ -24,6 +24,11 @@ private:
      */
     Graph<int> graph;
 
+    Graph<string> stringGraph;
+
+    unordered_map<int,string> intToString;
+    unordered_map<string,double> stringsToWeight;
+
 public:
 
     /*!
@@ -77,6 +82,34 @@ public:
     void triangularApproximation(int start);
 
     void preorderTraversal(int node, vector<int> &path, vector<bool> &visited);
+
+    void readAndParseChoice(const string& choice);
+
+    void simulatedAnnealing(vector<int> path, Graph<int> graph, double T, double rate);
+
+    void twoOpt(vector<int> &path, Graph<int> graph);
+
+    void simulatedAnnealing(vector<int> path, Graph<int> *graph, double T, double rate);
+
+    double printVertexPath(const vector<Vertex<int> *> &path);
+
+    double pathVertexWeight(const vector<Vertex<int> *> &path);
+
+    void twoOpt(vector<int> &path);
+
+    void twoOpt(vector<Vertex<int> *> &tour);
+
+    void triangularApproximationTwoOpt(int start);
+
+    Graph<string> *primString(Graph<string> *g);
+
+    void triangularApproximationTwoOptString(const string& start);
+
+    void preorderTraversalString(const string& node, vector<string> &path, vector<bool> &visited);
+
+    void twoOptString(vector<Vertex<string> *> &tour);
+
+    void readAndParseChoiceString(const string &choice);
 };
 
 #endif //DA2324_PRJ1_G15_4_PARSING_H
