@@ -353,7 +353,7 @@ void stadiumsHeuristicMenu(System system) {
                 sistema.triangularApproximation(0,0);
                 break;
             case '3':
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '4':
                 sistema.comparison();
@@ -404,7 +404,7 @@ void tourismHeuristicMenu(System system) {
                 break;
             case '3':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '4':
                 sistema.comparison();
@@ -579,7 +579,7 @@ void eightHundredMenu(System system) {
                 sistema.triangularApproximation(0,0);
                 break;
             case '2':
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -669,7 +669,7 @@ void sixHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -715,7 +715,7 @@ void fiveHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -761,7 +761,7 @@ void fourHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -807,7 +807,7 @@ void threeHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -853,7 +853,7 @@ void twoHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -899,7 +899,7 @@ void oneHundredMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -946,7 +946,7 @@ void seventyFiveMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -992,7 +992,7 @@ void fiftyMenu(System system) {
                 break;
             case '2':
                 //parse
-                sistema.christofedes(0,1);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();

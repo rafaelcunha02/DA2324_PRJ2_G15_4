@@ -28,6 +28,7 @@ private:
 
     unordered_map<int,string> intToString;
     unordered_map<string,double> stringsToWeight;
+    unordered_map<int,pair<double,double>> idToCoordinates;
 
 public:
 
@@ -115,11 +116,13 @@ public:
 
     void triangularApproximationTwoOpt(int start, int compares);
 
-    void christofedes(int start, int compares);
+    pair<double, double> christofedes(int start, int compares);
 
-    void triangularApproximation(int start, int compares);
+    pair<double, double> triangularApproximation(int start, int compares);
 
     double calculateMSTWeight(Graph<int> *mst);
+
+    void readAndParseChoice(const string &choice, const string &nodesPath);
 };
 
 #endif //DA2324_PRJ1_G15_4_PARSING_H
