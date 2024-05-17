@@ -31,7 +31,7 @@ double haversine(double lat_1, double log_1, double lat_2, double log_2) {
     lat_2 = deg2rad(lat_2);
     log_2 = deg2rad(log_2);
 
-    double r = 6371;
+    double r = 6371000;
 
     double dlat = lat_2 - lat_1;
     double dlon = log_2 - log_1;

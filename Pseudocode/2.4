@@ -1,0 +1,55 @@
+In this project, we faced the challenge of developing an algorithm to solve the Traveling Salesman Problem (TSP) even when dealing with graphs
+ that are not fully connected, meaning not all vertices are directly linked to each other. This presented a unique problem with no straightforward solution,
+ requiring us to think outside the box and adapt our approach.
+
+We chose to use the triangular approximation as our primary heuristic for the algorithm due to its simplicity and manageability compared to other potential heuristics.
+
+We would start, as it's commonly done in Triangular Approximation, by using Prim's algorithm to generate a Minimum Spanning Tree (MST) of the graph.
+Then, we would call an altered DFS that, while it could revisit vertices, would only do so when absolutely necessary, in order to avoid vertex repetition whenever possible.
+Finally, the core concept of our algorithm would be to handle 'dead ends' in the graph. When we encounter a vertex with no unvisited adjacent vertices, we employ the Haversine
+formula to calculate the nearest unvisited vertex that is not directly connected to the current vertex.
+
+Once we identify this nearest unvisited vertex, we apply Dijkstra's algorithm to determine the shortest path from the current vertex to this newly identified vertex. This path is then
+appended to our final solution.
+
+
+High-Level Pseudocode:
+
+after obtaining "start" as input from the user:
+
+function modifiedTriangularApproximation(start){
+
+    graph = prim(graph)
+    path = []
+    visited = []
+    modifiedPreorderTraversal(start, path, visited)
+    path.push_back(start)
+    return path, pathWeight(path)
+    }
+
+function modifiedPreorderTraversal(node, path, visited){
+    visited[node] = true
+    path.push_back(node)
+
+    for v in graph.getVertexSet(){
+        if v.getPath() and v.getPath().getOrig().getInfo() == node and not visited[v.getInfo()]:
+            modifiedPreorderTraversal(v.getInfo(), path, visited)
+        else if v is a 'dead end':
+            nearest_vertex =  findNearestUnvisitedVertexUsingHaversine(node)
+            shortest_path = dijkstra(node, nearest_vertex, graph)
+            path += shortest_path
+            modifiedPreorderTraversal(nearest_vertex, path, visited)
+   }
+
+Our algorithm has the advantage of handling graphs that are not fully connected, unlike the triangular approximation algorithm. However, its complexity increases significantly
+as it requires calculating the distance between unconnected vertices and finding the shortest path between them.  The algorithm's effectiveness also depends on the accuracy
+of the distance calculation and is affected by the time complexity of Dijkstra's algorithm.
+
+A potential drawback is that, since we determine the next node using the Haversine formula, in rare cases, the path to the nearest node may not be the most efficient because
+despite the node being close, the path to it could be longer than to another more distant node due to lack of connections. Nevertheless, this algorithm is designed to handle
+real-world graphs, where it's more likely that the path to the nearest node is shorter than to a more distant one.
+
+In conclusion, this problem is very complex not only because of the NP-hard nature of the TSP but also because of the additional constraints we imposed on the graph, which make it
+even more challenging. Our algorithm is a creative potential solution to this problem, but it is not without its limitations. The testing and validation of our solution are also hard to
+determine, because even if we can use a lower bound as a reference for the weight of the path, the enormous scale of the dataset makes it difficult to confirm the validity of
+the returned path.
