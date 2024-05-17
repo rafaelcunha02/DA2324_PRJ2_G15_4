@@ -120,6 +120,8 @@ public:
     void triangularApproximationTwoOpt(int start, int compares);
 
     static double calculateMSTWeight(Graph<int> *mst);
+
+    void christofedes(int start, int compares);
 };
 
 #endif //DA2324_PRJ1_G15_4_PARSING_H

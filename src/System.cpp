@@ -43,6 +43,8 @@ void System::readAndParse() {
 
         graph.addBidirectionalEdge(stoi(source),stoi(dest), capacity);
     }
+
+
 }
 
 
@@ -78,6 +80,9 @@ void System::readAndParseChoice(const string& choice){
 
         graph.addBidirectionalEdge(stoi(source),stoi(dest), weight);
     }
+
+    cout << "Graph loaded successfully!" << endl;
+
 }
 
 
@@ -147,7 +152,6 @@ double haversine(double lat_1, double log_1, double lat_2, double log_2) {
 
 
 //BRUTE-FORCE 2.1
-
 void System::backtrack(int start){
     auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -291,7 +295,7 @@ for (auto &p : parent) {
     return mst;
 }
 
-
+/*
 void System::printTree(const vector<Vertex<int> *> &vertexSet) {
     unordered_map<int,vector<int>> adj;
     vector<int> path;
@@ -327,7 +331,7 @@ void System::printTree(const vector<Vertex<int> *> &vertexSet) {
     cout << "Lower Bound: " << w << endl;
     resetGraph();
 }
-
+*/
 
 
 
@@ -375,6 +379,7 @@ void System::preorderTraversal(int node, vector<int> &path, vector<bool> &visite
 
 vector<Edge<int>*> MinWeightMatching(vector<Vertex<int>*>& impares) {
     vector<Edge<int>*> matching;
+
     while(!impares.empty()){
         auto v = impares.back();
         impares.pop_back();
@@ -403,8 +408,7 @@ vector<Edge<int>*> MinWeightMatching(vector<Vertex<int>*>& impares) {
 }
 
 
-
-vector<Vertex<int>*> eulerianCircuit(int start, Graph<int>& graph) {
+vector<Vertex<int>*> eulerianCircuit(int start, Graph<int>& graph, const Graph<int>& graphCopy) {
     for (auto v : graph.getVertexSet()) {
         if (v->getAdj().size() % 2 != 0) {
             cout << "no eulerian circuit\n";
@@ -418,12 +422,14 @@ vector<Vertex<int>*> eulerianCircuit(int start, Graph<int>& graph) {
     int currentVertex = start;
 
     while (!currentPath.empty()) {
+
         if (!graph.findVertex(currentVertex)->getAdj().empty()) {
             currentPath.push(currentVertex);
             int nextVertex = graph.findVertex(currentVertex)->getAdj().front()->getDest()->getInfo();
             graph.removeEdge(currentVertex, nextVertex);
             graph.removeEdge(nextVertex, currentVertex);
             currentVertex = nextVertex;
+
         } else {
             circuit.push_back(graph.findVertex(currentVertex));
             currentVertex = currentPath.top();
@@ -432,7 +438,21 @@ vector<Vertex<int>*> eulerianCircuit(int start, Graph<int>& graph) {
     }
 
     reverse(circuit.begin(), circuit.end());
-    return circuit;
+
+    graph = graphCopy;
+
+    vector<Vertex<int>*> finalCircuit;
+    finalCircuit.reserve(circuit.size());
+
+    for (auto v : circuit){
+        finalCircuit.push_back(graph.findVertex(v->getInfo()));
+    }
+
+    //for (auto v : finalCircuit){
+       // cout << v->getAdj().size();
+    //}
+
+    return finalCircuit;
 }
 
 vector<Vertex<int>*> eulerToHamilton(const vector<Vertex<int>*>& eulerCircuit) {
@@ -449,8 +469,20 @@ vector<Vertex<int>*> eulerToHamilton(const vector<Vertex<int>*>& eulerCircuit) {
     return hamiltonPath;
 }
 
-void System::christofedes(int start){
+void System::christofedes(int start, int compares){
     auto start_time = std::chrono::high_resolution_clock::now();
+
+
+    Graph<int> graphCopy;
+    for (auto v : graph.getVertexSet()){
+        graphCopy.addVertex(v->getInfo());
+    }
+    for (auto v : graph.getVertexSet()){
+        for( auto edge:v->getAdj()){
+            graphCopy.addEdge(v->getInfo(), edge->getDest()->getInfo(), edge->getWeight());
+        }
+    }
+
 
     auto* tree = prim(&graph);
     vector<Vertex<int>*> impares;
@@ -465,9 +497,12 @@ void System::christofedes(int start){
     for (auto e : matching){
         tree->addBidirectionalEdge(e->getOrig()->getInfo(), e->getDest()->getInfo(), e->getWeight());
     }
-    vector<Vertex<int>*> euler = eulerianCircuit(start, *tree);
+
+    vector<Vertex<int>*> euler = eulerianCircuit(start, *tree, graphCopy);
+
     auto ham = eulerToHamilton(euler);
-    //twoOpt(ham);
+
+    twoOpt(ham);
 
     auto stop_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop_time - start_time);
@@ -476,24 +511,26 @@ void System::christofedes(int start){
     intPath.reserve(ham.size());
 
 
+
     for (auto v : ham){
         intPath.push_back(v->getInfo());
     }
 
-    printPath(intPath);
 
-    cout << "Christofides Path Weight: " << pathWeight(intPath) << endl;
-    cout << "Time taken by Christofides Algorithm: " << duration.count() << " milliseconds" << std::endl;
+    if(compares == 0){
+        printPath(intPath);
+    }
+
+    cout << "Path Student Algorithm Weight: " << pathWeight(intPath) << endl;
+    cout << "Time taken by Student Algorithm: " << duration.count() << " milliseconds" << std::endl;
 }
 
 
 //TWO OPT FOR EX 2.3 // THERE'S ALSO A 2MIN LIMITED VERSION
 void System::twoOpt(vector<Vertex<int>*>& tour) {
-    cout << "inicio";
     bool improvement = true;
     auto tamanho = tour.size();
     while (improvement) {
-        cout << "improvement";
         improvement = false;
         for (int i = 0; i < tamanho - 1; i++) {
             for (int j = i + 2; j < tamanho - 1; j++) {
@@ -645,6 +682,7 @@ void System::comparison(){
     auto mst = prim(&graph);
     cout << "Lower Bound: " <<  calculateMSTWeight(mst) << endl;
     triangularApproximation(0,1);
-    triangularApproximationTwoOpt(0,1);
+    christofedes(0,1);
 
 }
+
