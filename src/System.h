@@ -61,7 +61,7 @@ public:
 
 
 
-    void printTree(const vector<Vertex<int> *> &vertexSet);
+    static void printTree(const vector<Vertex<int> *> &vertexSet);
 
     double spanningTreeCost(const vector<Vertex<int> *> &res);
 
@@ -111,17 +111,15 @@ public:
 
     void readAndParseChoiceString(const string &choice);
 
-    void graphInfo();
-
     void comparison();
-
-    void triangularApproximation(int start, int compares);
 
     void triangularApproximationTwoOpt(int start, int compares);
 
-    static double calculateMSTWeight(Graph<int> *mst);
-
     void christofedes(int start, int compares);
+
+    void triangularApproximation(int start, int compares);
+
+    double calculateMSTWeight(Graph<int> *mst);
 };
 
 #endif //DA2324_PRJ1_G15_4_PARSING_H

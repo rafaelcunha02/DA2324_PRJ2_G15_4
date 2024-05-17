@@ -270,27 +270,27 @@ Graph<int> * System::prim(Graph<int> * g) {
         }
     }
 
-auto* mst = new Graph<int>();
+    auto* mst = new Graph<int>();
 
-for (auto &p : parent) {
-    int childInfo = p.first;
-    int parentInfo = p.second;
+    for (auto &p : parent) {
+        int childInfo = p.first;
+        int parentInfo = p.second;
 
-    Vertex<int>* childVertex = mst->findVertex(childInfo);
-    if (!childVertex) {
-        mst->addVertex(childInfo);
-        childVertex = mst->findVertex(childInfo);
+        Vertex<int>* childVertex = mst->findVertex(childInfo);
+        if (!childVertex) {
+            mst->addVertex(childInfo);
+            childVertex = mst->findVertex(childInfo);
+        }
+
+        Vertex<int>* parentVertex = mst->findVertex(parentInfo);
+        if (!parentVertex) {
+            mst->addVertex(parentInfo);
+            parentVertex = mst->findVertex(parentInfo);
+        }
+
+        childVertex->addEdge(parentVertex, g->findVertex(childInfo)->getDist());
+        parentVertex->addEdge(childVertex, g->findVertex(childInfo)->getDist());
     }
-
-    Vertex<int>* parentVertex = mst->findVertex(parentInfo);
-    if (!parentVertex) {
-        mst->addVertex(parentInfo);
-        parentVertex = mst->findVertex(parentInfo);
-    }
-
-    childVertex->addEdge(parentVertex, g->findVertex(childInfo)->getDist());
-    parentVertex->addEdge(childVertex, g->findVertex(childInfo)->getDist());
-}
 
     return mst;
 }
@@ -449,7 +449,7 @@ vector<Vertex<int>*> eulerianCircuit(int start, Graph<int>& graph, const Graph<i
     }
 
     //for (auto v : finalCircuit){
-       // cout << v->getAdj().size();
+    // cout << v->getAdj().size();
     //}
 
     return finalCircuit;
@@ -521,16 +521,18 @@ void System::christofedes(int start, int compares){
         printPath(intPath);
     }
 
-    cout << "Path Student Algorithm Weight: " << pathWeight(intPath) << endl;
-    cout << "Time taken by Student Algorithm: " << duration.count() << " milliseconds" << std::endl;
+    cout << "Christofides Path Weight: " << pathWeight(intPath) << endl;
+    cout << "Time taken by Christofides Algorithm: " << duration.count() << " milliseconds" << std::endl;
 }
 
 
 //TWO OPT FOR EX 2.3 // THERE'S ALSO A 2MIN LIMITED VERSION
 void System::twoOpt(vector<Vertex<int>*>& tour) {
+    cout << "inicio";
     bool improvement = true;
     auto tamanho = tour.size();
     while (improvement) {
+        cout << "improvement";
         improvement = false;
         for (int i = 0; i < tamanho - 1; i++) {
             for (int j = i + 2; j < tamanho - 1; j++) {
@@ -685,4 +687,3 @@ void System::comparison(){
     christofedes(0,1);
 
 }
-

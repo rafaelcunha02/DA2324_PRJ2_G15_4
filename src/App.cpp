@@ -536,7 +536,7 @@ void nineHundredMenu(System system) {
                 sistema.triangularApproximation(0,0);
                 break;
             case '2':
-                    sistema.christofedes(0,0);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
@@ -939,7 +939,7 @@ void seventyFiveMenu(System system) {
         }
 
         switch (choice[0]) {
-                break;
+            break;
             case '1':
                 //parse
                 sistema.triangularApproximation(0,0);
@@ -1038,7 +1038,7 @@ void twentyFiveMenu(System system) {
                 break;
             case '2':
                 //parse
-                    sistema.christofedes(0,0);
+                sistema.christofedes(0,0);
                 break;
             case '3':
                 sistema.comparison();
