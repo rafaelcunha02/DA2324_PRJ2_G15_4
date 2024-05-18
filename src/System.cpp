@@ -98,7 +98,7 @@ void System::readAndParseChoice(const string& choice){
         double lonn = stod(lon);
         double latt = stod(lat);
 
-        idToCoordinates[idd] = make_pair(lonn,latt);
+        idToCoordinates[idd] = make_pair(latt,lonn);
 
     }
     int count = 0;
