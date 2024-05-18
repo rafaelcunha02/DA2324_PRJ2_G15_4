@@ -56,7 +56,7 @@ void System::readAndParseChoice(const string& choice){
     ifstream file(path);
     string line;
 
-    if(choice[0] != 'E'){
+    if(choice[0] == 'T'){
         getline(file, line);
     }
     while (getline(file, line)){
@@ -552,6 +552,7 @@ pair<double, double> System::christofedes(int start, int compares){
     //eliminando Edges duplicadas no processo, um pouco parecido com o que se faz na DFS do Triangular, mas mais complexo
     auto ham = eulerToHamilton(euler);
 
+
     //aplicamos o 2-opt ao caminho hamiltoniano, este é um algoritmo de optimização
     //basicamente, tenta trocar duas arestas do caminho por outras duas arestas que mantenham um caminho válido
     //se o caminho resultante for mais curto, mantemos a troca
@@ -566,6 +567,7 @@ pair<double, double> System::christofedes(int start, int compares){
     for (auto v : ham){
         intPath.push_back(v->getInfo());
     }
+    intPath.push_back(start);
 
     double pathWeightValue = pathWeight(intPath);
 

@@ -20,14 +20,29 @@ using namespace std;
 class System {
 
 private:
-    /*! @brief The graph that stores information of all
-     */
+    /**
+      * @brief The graph that stores information of all.
+      */
     Graph<int> graph;
 
+    /**
+     * @brief The graph that stores string information.
+     */
     Graph<string> stringGraph;
 
+    /**
+     * @brief A map that associates an integer with a string.
+     */
     unordered_map<int,string> intToString;
+
+    /**
+     * @brief A map that associates a string with a weight (double).
+     */
     unordered_map<string,double> stringsToWeight;
+
+    /**
+     * @brief A map that associates an integer with a pair of coordinates (double, double).
+     */
     unordered_map<int,pair<double,double>> idToCoordinates;
 
 public:
