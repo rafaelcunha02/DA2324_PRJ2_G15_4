@@ -1,20 +1,11 @@
 # ninja log v5
 88	1126	7373931935368993	CMakeFiles/untitled19.dir/data_structures/UFDS.cpp.obj	cc57af96576d00c5
-5	1075	7376589940213368	CMakeFiles/untitled19.dir/main.cpp.obj	2bfaf8b477c147e2
-40	1437	7376589943877422	CMakeFiles/untitled19.dir/src/App.cpp.obj	7a469435fa3e3ce9
-5	2152	7376622966620822	CMakeFiles/untitled19.dir/src/System.cpp.obj	a7fa244ef9a9c0fb
-2152	2683	7376622971958491	untitled19.exe	342537eb9b0a9e7c
-3	1593	7376623762885104	CMakeFiles/untitled19.dir/src/System.cpp.obj	a7fa244ef9a9c0fb
-1593	2043	7376623767355699	untitled19.exe	342537eb9b0a9e7c
-4	1166	7376625431908078	CMakeFiles/untitled19.dir/src/App.cpp.obj	7a469435fa3e3ce9
-1167	1789	7376625437990190	untitled19.exe	342537eb9b0a9e7c
-43	4536	7376954630197893	CMakeFiles/untitled19.dir/src/System.cpp.obj	a7fa244ef9a9c0fb
-4538	5813	7376954642864644	untitled19.exe	342537eb9b0a9e7c
-9	5155	7376968802697334	CMakeFiles/untitled19.dir/src/System.cpp.obj	a7fa244ef9a9c0fb
-5157	6575	7376968816770192	untitled19.exe	342537eb9b0a9e7c
 28	1069	7377015073504820	CMakeFiles/untitled19.dir/main.cpp.obj	2bfaf8b477c147e2
 69	1401	7377015076902972	CMakeFiles/untitled19.dir/src/App.cpp.obj	7a469435fa3e3ce9
-59	2115	7377015083973140	CMakeFiles/untitled19.dir/src/System.cpp.obj	a7fa244ef9a9c0fb
-2116	2690	7377015089624971	untitled19.exe	342537eb9b0a9e7c
 5	2589	7378597389945848	CMakeFiles/untitled19.dir/src/System.cpp.obj	a7fa244ef9a9c0fb
 2590	3174	7378597395784757	untitled19.exe	342537eb9b0a9e7c
+76	783	7378600755797398	CMakeFiles/untitled19.dir/data_structures/UFDS.cpp.obj	cc57af96576d00c5
+5	1860	7378600766333235	CMakeFiles/untitled19.dir/main.cpp.obj	2bfaf8b477c147e2
+95	2545	7378600773329841	CMakeFiles/untitled19.dir/src/App.cpp.obj	7a469435fa3e3ce9
+48	3802	7378600786049751	CMakeFiles/untitled19.dir/src/System.cpp.obj	a7fa244ef9a9c0fb
+3802	4435	7378600792291819	untitled19.exe	342537eb9b0a9e7c
