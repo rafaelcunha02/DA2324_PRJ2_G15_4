@@ -388,7 +388,6 @@ void System::preorderTraversal(int node, vector<int> &path, vector<bool> &visite
 vector<Edge<int>*> MinWeightMatching(vector<Vertex<int>*>& impares) {
     vector<Edge<int>*> matching;
 
-
     //para cada vertice com grau impar
     while(!impares.empty()){
         //extrair
