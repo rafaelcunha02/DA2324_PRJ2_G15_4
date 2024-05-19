@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/untitled19.dir/main.cpp.o CMakeFiles/untitled19.dir/src/System.cpp.o CMakeFiles/untitled19.dir/data_structures/UFDS.cpp.o CMakeFiles/untitled19.dir/src/App.cpp.o -o untitled19 
